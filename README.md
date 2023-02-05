@@ -26,7 +26,10 @@ intellj
 ## デバッグ
 
 1. 実行可能jarを作成
+
+```
 mvn package spring-boot:repackage
+```
 
 2. コマンドラインからデバッグ起動
 
