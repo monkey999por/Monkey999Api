@@ -32,7 +32,7 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
             try {
                 if (!Status.isInit) {
 //                    String profile = Paths.get(Setting.getAsString("lang_detector_profile")).toFile().getAbsolutePath();
-                    String profile = ResourceUtils.getFile("classpath:" + Setting.getAsString("lang_detector_profile")).getAbsolutePath();
+                    String profile = ResourceUtils.getFile("classpath:" + Setting.getAsString("lang_detector_profile")).getPath();
                     DetectorFactory.loadProfile(profile);
                     Status.isInit = true;
                 }

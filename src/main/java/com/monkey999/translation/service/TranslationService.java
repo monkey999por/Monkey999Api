@@ -7,6 +7,7 @@ import com.monkey999.translation.ent.TranslationRes;
 import com.monkey999.utils.tool.LangDetector;
 import com.monkey999.utils.tool.LangDetectorFactory;
 import monkey999.tools.Setting;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,31 +21,54 @@ import java.awt.datatransfer.StringSelection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 public class TranslationService {
 
+    Logger logger = LoggerFactory.getLogger(TranslationService.class);
+
     public TranslationRes translate(TranslationReq req) {
 
         try{
+            // TODO loggerを入れる
+
             // TODO: test 設定ファイルが読めるか
-            String path = ResourceUtils.getFile("classpath:translation/setting.properties").getAbsolutePath();
+            // localはOK
+            // ラズパイデプロイするとダメ？
+            logger.info("setting start");
+            String path = ResourceUtils.getFile("classpath:translation/setting.properties").getPath();
             Setting.init(path);
-            System.out.println(Setting.getAllToString());
+            logger.info(Setting.getAllToString());
+            logger.info("setting done");
 
             // TODO: test Detector使えるか
+            // localはOK
+            // ラズパイデプロイするとダメ？
+            logger.info("detector start");
             LangDetector detector = LangDetectorFactory.newInstance();
-            System.out.println(detector.isJapanese("あいうえお"));
-            System.out.println(detector.isJapanese("apple"));
+            logger.info(detector.isJapanese("あいうえお").toString());
+            logger.info(detector.isJapanese("apple").toString());
+            logger.info("detector done");
 
+            logger.info("api start");
 //            TranslationClient client = TranslationClientFactory.newInstance();
             var result = new TranslationRes();
 //            result.text = client.request(req.text);
                         result.text = "client.request(req.text);";
             result.status = "200";
+            logger.info("monkey999 api ok");
             return result;
 
         }catch (Exception e) {
+
+//             TODO ラズパイに載せたら以下のエラー
+//            cannot be resolved to absolute file path because it does not reside in the file system: jar:file:/server/Monkey999Api-0.0.1-SNAPSHOT.jar!/BOOT-INF/classes!/translation/setting.properties
+
+            logger.info("monkey999 api error");
+            logger.info(e.getMessage());
+            logger.info(e.getLocalizedMessage());
             e.printStackTrace();
             var temp = new TranslationRes();
             temp.status = "500";
