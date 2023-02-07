@@ -56,7 +56,7 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
             // TODO: javaのHTTP clientを使用する
 //            return Cmd.execute(false, new String[]{"curl", "-L", "-s", requestUrl});
             return null;
-        }catch (Exception e) {
+        } catch (Exception e) {
             // とりあえずつぶしとけ
             return "API ERROR";
         }

@@ -13,5 +13,4 @@ public class ServerError {
     String errorCode;
 
 
-
 }

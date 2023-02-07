@@ -46,10 +46,11 @@ public class TranslationClientOfDeepL implements TranslationClient {
         try {
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                HashMap<String, Integer> deeplUsage = (HashMap<String, Integer>) mapper.readValue(response.body().toString(),  new TypeReference<Map<String, Integer>>() { });
+                HashMap<String, Integer> deeplUsage = (HashMap<String, Integer>) mapper.readValue(response.body().toString(), new TypeReference<Map<String, Integer>>() {
+                });
 
-                    System.out.println("現在の利用文字数: " + deeplUsage.get("character_count"));
-                    System.out.println("残りの翻訳可能文字数: " + (deeplUsage.get("character_limit") - deeplUsage.get("character_count")));
+                System.out.println("現在の利用文字数: " + deeplUsage.get("character_count"));
+                System.out.println("残りの翻訳可能文字数: " + (deeplUsage.get("character_limit") - deeplUsage.get("character_count")));
 
                 return deeplUsage.get("character_count") > deeplUsage.get("character_limit");
             } else {
@@ -66,7 +67,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
     public String request(String text) {
 
         // 文字数上限 1000文字まで
-        if (text == null || text.getBytes(StandardCharsets.UTF_8).length > 3000){
+        if (text == null || text.getBytes(StandardCharsets.UTF_8).length > 3000) {
             return "翻訳できる文字数の上限を超えています。";
         }
 
@@ -84,7 +85,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
         var paramSourceLang = isJapanese ? "JA" : "EN";
         var paramTargetLang = isJapanese ? "EN-US" : "JA";
 
-        var requestBody = String.format("text=%s&source_lang=%s&target_lang=%s", paramText,paramSourceLang,paramTargetLang);
+        var requestBody = String.format("text=%s&source_lang=%s&target_lang=%s", paramText, paramSourceLang, paramTargetLang);
         System.out.println("requestBody: " + requestBody);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -107,8 +108,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 String sourceLang = responseBody.get("translations").get(0).get("detected_source_language").asText();
                 String translateResult = responseBody.get("translations").get(0).get("text").asText();
 
-                    System.out.printf("sourceLang: %s\r\n", sourceLang);
-                    System.out.printf("result: %s\r\n", translateResult);
+                System.out.printf("sourceLang: %s\r\n", sourceLang);
+                System.out.printf("result: %s\r\n", translateResult);
 
                 return translateResult;
             } else {

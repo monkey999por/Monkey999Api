@@ -1,9 +1,12 @@
 package com.monkey999.utils.tool;
 
 public class LangDetectorFactory {
-    private LangDetectorFactory(){};
+    private LangDetectorFactory() {
+    }
 
-    public static LangDetector newInstance(){
+    ;
+
+    public static LangDetector newInstance() {
         return new LangDetectorOfCybozuLabs();
     }
 }
