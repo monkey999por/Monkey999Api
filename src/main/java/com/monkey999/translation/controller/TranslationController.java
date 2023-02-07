@@ -13,7 +13,6 @@ public class TranslationController {
     @PostMapping(value = "/translate", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TranslationRes translate(@RequestBody TranslationReq request) {
-
         var service = new TranslationService();
         return service.translate(request);
     }

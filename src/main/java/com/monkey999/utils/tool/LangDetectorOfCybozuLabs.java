@@ -4,6 +4,7 @@ import com.cybozu.labs.langdetect.Detector;
 import com.cybozu.labs.langdetect.DetectorFactory;
 import com.monkey999.utils.constant.TargetLang;
 import monkey999.tools.Setting;
+import org.springframework.util.ResourceUtils;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -30,7 +31,8 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
         synchronized (this) {
             try {
                 if (!Status.isInit) {
-                    String profile = Paths.get(Setting.getAsString("lang_detector_profile")).toFile().getAbsolutePath();
+//                    String profile = Paths.get(Setting.getAsString("lang_detector_profile")).toFile().getAbsolutePath();
+                    String profile = ResourceUtils.getFile("classpath:" + Setting.getAsString("lang_detector_profile")).getAbsolutePath();
                     DetectorFactory.loadProfile(profile);
                     Status.isInit = true;
                 }
