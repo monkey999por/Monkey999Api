@@ -2,6 +2,7 @@ package com.monkey999.translation.client;
 
 import com.monkey999.utils.tool.LangDetector;
 import com.monkey999.utils.tool.LangDetectorFactory;
+import monkey999.tools.Setting;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;

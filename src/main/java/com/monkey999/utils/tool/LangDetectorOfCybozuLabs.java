@@ -1,6 +1,9 @@
 package com.monkey999.utils.tool;
 
+import com.cybozu.labs.langdetect.Detector;
+import com.cybozu.labs.langdetect.DetectorFactory;
 import com.monkey999.utils.constant.TargetLang;
+import monkey999.tools.Setting;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;

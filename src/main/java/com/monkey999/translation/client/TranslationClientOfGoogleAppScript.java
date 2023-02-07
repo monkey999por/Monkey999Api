@@ -4,6 +4,7 @@ import com.monkey999.utils.constant.Const;
 import com.monkey999.utils.constant.TargetLang;
 import com.monkey999.utils.tool.LangDetector;
 import com.monkey999.utils.tool.LangDetectorFactory;
+import monkey999.tools.Setting;
 import org.apache.commons.codec.net.URLCodec;
 
 
@@ -54,6 +55,7 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
         try {
             // TODO: javaのHTTP clientを使用する
 //            return Cmd.execute(false, new String[]{"curl", "-L", "-s", requestUrl});
+            return null;
         }catch (Exception e) {
             // とりあえずつぶしとけ
             return "API ERROR";

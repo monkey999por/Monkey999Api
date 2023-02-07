@@ -1,4 +1,4 @@
-package com.monkey999.translation;
+package com.monkey999;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

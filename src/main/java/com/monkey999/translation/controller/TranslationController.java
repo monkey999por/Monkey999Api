@@ -2,10 +2,6 @@ package com.monkey999.translation.controller;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.monkey999.translation.ent.Greeting;
-import com.monkey999.translation.ent.TestRequest;
-import com.monkey999.translation.ent.TranslateReq;
-import com.monkey999.translation.ent.TranslateRes;
 import com.monkey999.translation.ent.TranslationReq;
 import com.monkey999.translation.ent.TranslationRes;
 import org.springframework.http.MediaType;

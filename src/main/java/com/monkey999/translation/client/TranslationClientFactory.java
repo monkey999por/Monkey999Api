@@ -1,6 +1,7 @@
 package com.monkey999.translation.client;
 
 
+import monkey999.tools.Setting;
 
 public class TranslationClientFactory {
     private TranslationClientFactory(){};
