@@ -1,4 +1,4 @@
-package translate;
+package com.monkey999.utils.tool;
 
 public class LangDetectorFactory {
     private LangDetectorFactory(){};

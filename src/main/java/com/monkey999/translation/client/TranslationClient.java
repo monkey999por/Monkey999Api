@@ -1,4 +1,4 @@
-package translate;
+package com.monkey999.translation.client;
 
 public interface TranslationClient {
     /**

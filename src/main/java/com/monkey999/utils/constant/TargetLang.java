@@ -1,4 +1,4 @@
-package translate;
+package com.monkey999.utils.constant;
 
 /**
  * target of translation language code.

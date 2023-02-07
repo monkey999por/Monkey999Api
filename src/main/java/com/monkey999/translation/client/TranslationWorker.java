@@ -1,8 +1,7 @@
-package translate;
+package com.monkey999.translation.client;
 
-import app.Debug;
-import monkey999.tools.Setting;
-import tools.MyTextToSpeechClient;
+import com.monkey999.utils.tool.LangDetector;
+import com.monkey999.utils.tool.LangDetectorFactory;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -58,7 +57,7 @@ public class TranslationWorker {
 
                     System.out.println();
                 } catch (Exception e) {
-                    Debug.print(e);
+
                 } finally {
                     break;
                 }
@@ -74,16 +73,15 @@ public class TranslationWorker {
             public void run() {
                 try {
                     // text to speech request
-                    MyTextToSpeechClient.request(
-                            detector.isJapanese(translationText) ? result.get() : translationText);
+//                    MyTextToSpeechClient.request(
+//                            detector.isJapanese(translationText) ? result.get() : translationText);
 
                     //  play back text to speech result(mp3)
                     // see -> setting : "google_cloud_text_to_speech_out_audio_file"
-                    if (Setting.getAsBoolean("enable_google_cloud_text_to_speech")) {
-                        MyTextToSpeechClient.playback();
-                    }
+//                    if (Setting.getAsBoolean("enable_google_cloud_text_to_speech")) {
+//                        MyTextToSpeechClient.playback();
+//                    }
                 } catch (Exception e) {
-                    Debug.print(e);
                 }
             }
         };

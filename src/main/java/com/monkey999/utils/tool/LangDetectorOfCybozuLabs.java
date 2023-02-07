@@ -1,10 +1,6 @@
-package translate;
+package com.monkey999.utils.tool;
 
-import app.Debug;
-import monkey999.tools.Setting;
-import com.cybozu.labs.langdetect.Detector;
-import com.cybozu.labs.langdetect.DetectorFactory;
-import com.cybozu.labs.langdetect.LangDetectException;
+import com.monkey999.utils.constant.TargetLang;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -65,7 +61,7 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
                     return TargetLang.ENGLISH;
             }
         } catch (Exception e) {
-            Debug.print(e);
+
             return null;
         }
     }

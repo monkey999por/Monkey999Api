@@ -1,4 +1,4 @@
-package com.monkey999.TranslationApi;
+package com.monkey999.translation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,6 +1,6 @@
-package com.monkey999.TranslationApi.ent;
+package com.monkey999.translation.ent;
 
-public class TranslateReq {
+public class TranslationReq {
 
     /**
      * 翻訳テキスト

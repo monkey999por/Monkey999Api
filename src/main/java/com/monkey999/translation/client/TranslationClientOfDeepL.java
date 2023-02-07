@@ -1,11 +1,12 @@
-package translate;
+package com.monkey999.translation.client;
 
 import app.Debug;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import constant.AppConst;
-import monkey999.tools.Setting;
+import com.monkey999.utils.constant.Const;
+import com.monkey999.utils.tool.LangDetector;
+import com.monkey999.utils.tool.LangDetectorFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -25,9 +26,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
     private final LangDetector detector = LangDetectorFactory.newInstance();
 
     public TranslationClientOfDeepL() {
-        if (Debug.debug_mode()) {
-            System.out.println("create instance TranslationClientOfDeepL");
-        }
+
         // 利用上限がきている場合は利用不可
         if (isLimits()) {
             synchronized (TranslationClientOfDeepL.class) {
@@ -48,10 +47,10 @@ public class TranslationClientOfDeepL implements TranslationClient {
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 HashMap<String, Integer> deeplUsage = mapper.readValue(response.body().toString(),  new TypeReference<Map<String, Integer>>() { });
-                if (Debug.debug_mode()){
+
                     System.out.println("現在の利用文字数: " + deeplUsage.get("character_count"));
                     System.out.println("残りの翻訳可能文字数: " + (deeplUsage.get("character_limit") - deeplUsage.get("character_count")));
-                }
+
                 return deeplUsage.get("character_count") > deeplUsage.get("character_limit");
             } else {
                 throw new Exception("http status code error: " + response.statusCode());
@@ -77,9 +76,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
 
         String paramText = "";
         try {
-            paramText = Objects.isNull(text) ? "" : AppConst.codec.encode(text, "UTF-8");
+            paramText = Objects.isNull(text) ? "" : Const.codec.encode(text, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            Debug.print(e);
         }
 
         Boolean isJapanese = detector.isJapanese(text);
@@ -87,7 +85,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
         var paramTargetLang = isJapanese ? "EN-US" : "JA";
 
         var requestBody = String.format("text=%s&source_lang=%s&target_lang=%s", paramText,paramSourceLang,paramTargetLang);
-        Debug.print("requestBody: " + requestBody);
+        System.out.println("requestBody: " + requestBody);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -108,10 +106,10 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 JsonNode responseBody = mapper.readTree(response.body());
                 String sourceLang = responseBody.get("translations").get(0).get("detected_source_language").asText();
                 String translateResult = responseBody.get("translations").get(0).get("text").asText();
-                if (Debug.debug_mode()){
+
                     System.out.printf("sourceLang: %s\r\n", sourceLang);
                     System.out.printf("result: %s\r\n", translateResult);
-                }
+
                 return translateResult;
             } else {
                 return "なんらかのエラーが発生: HTTP STATUS: " + response.statusCode();

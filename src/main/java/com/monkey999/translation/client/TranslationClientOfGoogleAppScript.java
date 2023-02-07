@@ -1,10 +1,11 @@
-package translate;
+package com.monkey999.translation.client;
 
-import app.Debug;
-import constant.AppConst;
-import monkey999.tools.Setting;
+import com.monkey999.utils.constant.Const;
+import com.monkey999.utils.constant.TargetLang;
+import com.monkey999.utils.tool.LangDetector;
+import com.monkey999.utils.tool.LangDetectorFactory;
 import org.apache.commons.codec.net.URLCodec;
-import monkey999.tools.Cmd;
+
 
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
@@ -18,9 +19,7 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
     private final LangDetector detector = LangDetectorFactory.newInstance();
 
     public TranslationClientOfGoogleAppScript() {
-        if(Debug.debug_mode()){
-            System.out.println("create instance TranslationClientOfGoogleAppScript");
-        }
+
     }
 
     /**
@@ -33,9 +32,8 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
      */
     public static String createRequestUrl(String text, TargetLang source, TargetLang target) {
         try {
-            text = Objects.isNull(text) ? "" : AppConst.codec.encode(text, "UTF-8");
+            text = Objects.isNull(text) ? "" : Const.codec.encode(text, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            Debug.print(e);
         }
 
         String url = Setting.getAsString("translate_request_url");
@@ -54,7 +52,8 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
      */
     public static String translate(String requestUrl) {
         try {
-            return Cmd.execute(false, new String[]{"curl", "-L", "-s", requestUrl});
+            // TODO: javaのHTTP clientを使用する
+//            return Cmd.execute(false, new String[]{"curl", "-L", "-s", requestUrl});
         }catch (Exception e) {
             // とりあえずつぶしとけ
             return "API ERROR";
