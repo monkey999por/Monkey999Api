@@ -3,12 +3,11 @@ package com.monkey999.translation.client;
 import com.monkey999.utils.constant.Const;
 import com.monkey999.utils.constant.TargetLang;
 import com.monkey999.utils.tool.LangDetector;
-import com.monkey999.utils.tool.LangDetectorFactory;
 import monkey999.tools.Setting;
-import org.apache.commons.codec.net.URLCodec;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
-
+import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
@@ -43,7 +42,7 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
                 .replace("{text}", text)
                 .replace("{source}", source.languageCode)
                 .replace("{target}", target.languageCode);
-        return new StringBuilder().append(url).append("?").append(param).toString();
+        return url + "?" + param;
     }
 
     /**
@@ -55,8 +54,11 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
     public static String translate(String requestUrl) {
         try {
             // TODO: javaのHTTP clientを使用する
+
 //            return Cmd.execute(false, new String[]{"curl", "-L", "-s", requestUrl});
-            return null;
+            RestTemplate restTemplate = new RestTemplate();
+            String response = restTemplate.getForObject(requestUrl, String.class);
+            return response;
         } catch (Exception e) {
             // とりあえずつぶしとけ
             return "API ERROR";
@@ -70,6 +72,7 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
                 ? createRequestUrl(text, TargetLang.JAPANESE, TargetLang.ENGLISH)
                 : createRequestUrl(text, TargetLang.ENGLISH, TargetLang.JAPANESE);
 
+        System.out.println(requestUrl);
         return translate(requestUrl);
     }
 

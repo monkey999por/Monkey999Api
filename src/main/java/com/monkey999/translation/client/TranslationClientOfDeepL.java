@@ -1,12 +1,11 @@
 package com.monkey999.translation.client;
 
-import monkey999.tools.Setting;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monkey999.utils.constant.Const;
 import com.monkey999.utils.tool.LangDetector;
-import com.monkey999.utils.tool.LangDetectorFactory;
+import monkey999.tools.Setting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +23,8 @@ import java.util.Objects;
 @Component
 public class TranslationClientOfDeepL implements TranslationClient {
 
-    private static boolean available = true;
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static final boolean available = true;
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     LangDetector detector;
@@ -52,7 +51,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
         try {
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                HashMap<String, Integer> deeplUsage = (HashMap<String, Integer>) mapper.readValue(response.body().toString(), new TypeReference<Map<String, Integer>>() {
+                HashMap<String, Integer> deeplUsage = (HashMap<String, Integer>) mapper.readValue(response.body(), new TypeReference<Map<String, Integer>>() {
                 });
 
                 System.out.println("現在の利用文字数: " + deeplUsage.get("character_count"));
@@ -71,6 +70,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
 
     @Override
     public String request(String text) {
+        System.out.println(text);
 
         // 文字数上限 1000文字まで
         if (text == null || text.getBytes(StandardCharsets.UTF_8).length > 3000) {
@@ -103,6 +103,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
+        System.out.println(Setting.getAsString("deepl.authorization"));
 
         try {
             // リクエストを送信

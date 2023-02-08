@@ -2,16 +2,22 @@ package com.monkey999.translation.client;
 
 
 import monkey999.tools.Setting;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TranslationClientFactory {
-    private TranslationClientFactory() {
-    }
 
-    ;
+    @Autowired
+    TranslationClientOfDeepL translationClientOfDeepL;
 
-    public static TranslationClient newInstance() {
-        return Setting.getAsString("translation_client").equals("deepl") ? new TranslationClientOfDeepL() :
-                new TranslationClientOfGoogleAppScript();
+    @Autowired
+    TranslationClientOfGoogleAppScript translationClientOfGoogleAppScript;
+
+    public TranslationClient getInstance() {
+        System.out.println(Setting.getAsString("translation_client"));
+        return Setting.getAsString("translation_client").equals("deepl") ? translationClientOfDeepL :
+                translationClientOfGoogleAppScript;
     }
 
 }

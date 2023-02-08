@@ -3,12 +3,9 @@ package com.monkey999.utils.tool;
 import com.cybozu.labs.langdetect.Detector;
 import com.cybozu.labs.langdetect.DetectorFactory;
 import com.monkey999.utils.constant.TargetLang;
-import monkey999.tools.Setting;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -34,7 +31,7 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
      * @throws LangDetectException see {@link DetectorFactory#loadProfile(String)}
      */
 
-    public LangDetectorOfCybozuLabs(@Value("${lang.detector.profile:dummy}")String profile) {
+    public LangDetectorOfCybozuLabs(@Value("${lang.detector.profile:dummy}") String profile) {
         synchronized (this) {
             try {
                 if (!Status.isInit) {
@@ -48,7 +45,6 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
             }
         }
     }
-
 
 
     /**
@@ -76,7 +72,7 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
                     return TargetLang.ENGLISH;
             }
         } catch (Exception e) {
-e.printStackTrace();
+            e.printStackTrace();
             return TargetLang.JAPANESE;
         }
     }
