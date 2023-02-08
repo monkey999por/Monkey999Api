@@ -6,6 +6,8 @@ import com.monkey999.utils.tool.LangDetector;
 import com.monkey999.utils.tool.LangDetectorFactory;
 import monkey999.tools.Setting;
 import org.apache.commons.codec.net.URLCodec;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 
 import java.io.UnsupportedEncodingException;
@@ -14,14 +16,13 @@ import java.util.Objects;
 /**
  * see https://script.google.com/home/projects/1sFWfV_MOJbmBeTLT_R9F4Qq0qPolgkRsVt8A_sCMI2C9DTccZBRdHFDt/edit
  */
+@Component
 public class TranslationClientOfGoogleAppScript implements TranslationClient {
 
 
-    private final LangDetector detector = LangDetectorFactory.newInstance();
+    @Autowired
+    LangDetector detector;
 
-    public TranslationClientOfGoogleAppScript() {
-
-    }
 
     /**
      * create request URL as google apps script as "google_translate_api".

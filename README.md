@@ -10,7 +10,7 @@ APIいろいろ
 
 ## 起動
 
-cmd.exe
+mvn
 
 ```
 mvn install
@@ -21,6 +21,18 @@ intellj
 
 ```
 上部ツールバーから実行 -> run main
+```
+
+java
+
+```
+java -Dserver.port=8011 -jar ./target/Monkey999Api-0.0.1-SNAPSHOT.jar
+```
+
+java(pro)
+
+```
+java -Dserver.port=8011 -jar ./target/Monkey999Api-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro
 ```
 
 ## デバッグ
@@ -51,7 +63,7 @@ java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar .\t
 - bash
 
  ```
- curl -X POST http://{HOST}}:8080/translate \
+ curl -X POST http://{HOST}:8080/translate \
   -H "Content-Type: application/json" \
   -d '{"text": "Hello", "source": "en", "translationClient": "google"}'
  ```

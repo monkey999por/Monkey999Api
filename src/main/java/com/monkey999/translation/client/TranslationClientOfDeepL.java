@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monkey999.utils.constant.Const;
 import com.monkey999.utils.tool.LangDetector;
 import com.monkey999.utils.tool.LangDetectorFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -19,20 +21,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@Component
 public class TranslationClientOfDeepL implements TranslationClient {
 
     private static boolean available = true;
     private static ObjectMapper mapper = new ObjectMapper();
-    private final LangDetector detector = LangDetectorFactory.newInstance();
+
+    @Autowired
+    LangDetector detector;
 
     public TranslationClientOfDeepL() {
 
-        // 利用上限がきている場合は利用不可
-        if (isLimits()) {
-            synchronized (TranslationClientOfDeepL.class) {
-                TranslationClientOfDeepL.available = false;
-            }
-        }
+//        // 利用上限がきている場合は利用不可
+//        if (isLimits()) {
+//            synchronized (TranslationClientOfDeepL.class) {
+//                TranslationClientOfDeepL.available = false;
+//            }
+//        }
+
     }
 
     private Boolean isLimits() {

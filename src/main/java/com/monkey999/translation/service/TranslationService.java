@@ -4,11 +4,17 @@ import com.monkey999.translation.client.TranslationClient;
 import com.monkey999.translation.client.TranslationClientFactory;
 import com.monkey999.translation.ent.TranslationReq;
 import com.monkey999.translation.ent.TranslationRes;
+import com.monkey999.utils.ent.SettingGetSample;
 import com.monkey999.utils.tool.LangDetector;
 import com.monkey999.utils.tool.LangDetectorFactory;
+import com.monkey999.utils.tool.LangDetectorOfCybozuLabs;
 import monkey999.tools.Setting;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,22 +30,27 @@ import java.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@RestController
+@Service
 public class TranslationService {
-
     Logger logger = LoggerFactory.getLogger(TranslationService.class);
+
+    @Value("${setting.path:dummy}")
+    public String settingPath;
+
+    @Autowired
+    LangDetector langDetector;
 
     public TranslationRes translate(TranslationReq req) {
 
         try{
             // TODO loggerを入れる
 
-            // TODO: test 設定ファイルが読めるか
             // localはOK
             // ラズパイデプロイするとダメ？
             logger.info("setting start");
-            String path = ResourceUtils.getFile("classpath:translation/setting.properties").getPath();
-            Setting.init(path);
+//            String path = ResourceUtils.getFile("classpath:translation/setting.properties").getPath();
+            logger.info(settingPath);
+            Setting.init(settingPath);
             logger.info(Setting.getAllToString());
             logger.info("setting done");
 
@@ -47,16 +58,15 @@ public class TranslationService {
             // localはOK
             // ラズパイデプロイするとダメ？
             logger.info("detector start");
-            LangDetector detector = LangDetectorFactory.newInstance();
-            logger.info(detector.isJapanese("あいうえお").toString());
-            logger.info(detector.isJapanese("apple").toString());
+            logger.info("ja: " + langDetector.isJapanese("あいうえお").toString());
+            logger.info("ja: " + langDetector.isJapanese("this is pen").toString());
             logger.info("detector done");
 
             logger.info("api start");
 //            TranslationClient client = TranslationClientFactory.newInstance();
             var result = new TranslationRes();
 //            result.text = client.request(req.text);
-                        result.text = "client.request(req.text);";
+            result.text = "client.request(req.text);";
             result.status = "200";
             logger.info("monkey999 api ok");
             return result;

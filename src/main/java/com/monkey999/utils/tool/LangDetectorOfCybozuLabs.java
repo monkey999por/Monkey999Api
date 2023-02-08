@@ -4,6 +4,8 @@ import com.cybozu.labs.langdetect.Detector;
 import com.cybozu.labs.langdetect.DetectorFactory;
 import com.monkey999.utils.constant.TargetLang;
 import monkey999.tools.Setting;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.nio.file.Paths;
@@ -12,7 +14,11 @@ import java.util.ArrayList;
 /**
  * detect language.
  */
+@Component
 public class LangDetectorOfCybozuLabs implements LangDetector {
+
+    @Value("${lang.detector.profile:dummy}")
+    String langDetectorProfile;
 
     /**
      * Status of {@link com.cybozu.labs.langdetect}
@@ -27,12 +33,13 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
      *
      * @throws LangDetectException see {@link DetectorFactory#loadProfile(String)}
      */
-    public LangDetectorOfCybozuLabs() {
+
+    public LangDetectorOfCybozuLabs(@Value("${lang.detector.profile:dummy}")String profile) {
         synchronized (this) {
             try {
                 if (!Status.isInit) {
 //                    String profile = Paths.get(Setting.getAsString("lang_detector_profile")).toFile().getAbsolutePath();
-                    String profile = ResourceUtils.getFile("classpath:" + Setting.getAsString("lang_detector_profile")).getPath();
+//                    String profile = ResourceUtils.getFile("classpath:" + Setting.getAsString("lang_detector_profile")).getPath();
                     DetectorFactory.loadProfile(profile);
                     Status.isInit = true;
                 }
@@ -41,6 +48,8 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
             }
         }
     }
+
+
 
     /**
      * detect args text language.
@@ -52,6 +61,7 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
     @Override
     public TargetLang detect(String text) {
         try {
+
             Detector detector = DetectorFactory.create();
             detector.append(text);
             var result = detector.detect();
@@ -66,8 +76,8 @@ public class LangDetectorOfCybozuLabs implements LangDetector {
                     return TargetLang.ENGLISH;
             }
         } catch (Exception e) {
-
-            return null;
+e.printStackTrace();
+            return TargetLang.JAPANESE;
         }
     }
 

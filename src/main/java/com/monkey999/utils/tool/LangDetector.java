@@ -2,9 +2,11 @@ package com.monkey999.utils.tool;
 
 import com.cybozu.labs.langdetect.Detector;
 import com.monkey999.utils.constant.TargetLang;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
+@Component
 public interface LangDetector {
     /**
      * detect args text language.

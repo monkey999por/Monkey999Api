@@ -6,7 +6,7 @@ public class LangDetectorFactory {
 
     ;
 
-    public static LangDetector newInstance() {
-        return new LangDetectorOfCybozuLabs();
-    }
+//    public static LangDetector newInstance() {
+//        return new LangDetectorOfCybozuLabs();
+//    }
 }

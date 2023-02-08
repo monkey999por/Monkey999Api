@@ -1,5 +1,8 @@
 package com.monkey999.translation.client;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public interface TranslationClient {
     /**
      * translate by text as...
