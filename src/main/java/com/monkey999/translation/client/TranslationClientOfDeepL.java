@@ -3,9 +3,12 @@ package com.monkey999.translation.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.monkey999.translation.service.TranslationService;
 import com.monkey999.utils.constant.Const;
 import com.monkey999.utils.tool.LangDetector;
 import monkey999.tools.Setting;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +28,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
 
     private static final boolean available = true;
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    Logger logger = LoggerFactory.getLogger(TranslationClientOfDeepL.class);
 
     @Autowired
     LangDetector detector;
@@ -70,7 +75,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
 
     @Override
     public String request(String text) {
-        System.out.println(text);
+        logger.info(text);
+        logger.info(Setting.getAsString("deepl.authorization"));
 
         // 文字数上限 1000文字まで
         if (text == null || text.getBytes(StandardCharsets.UTF_8).length > 3000) {
@@ -92,7 +98,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
         var paramTargetLang = isJapanese ? "EN-US" : "JA";
 
         var requestBody = String.format("text=%s&source_lang=%s&target_lang=%s", paramText, paramSourceLang, paramTargetLang);
-        System.out.println("requestBody: " + requestBody);
+        logger.info("requestBody: " + requestBody);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -103,7 +109,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
-        System.out.println(Setting.getAsString("deepl.authorization"));
+        logger.info(Setting.getAsString("deepl.authorization"));
 
         try {
             // リクエストを送信
