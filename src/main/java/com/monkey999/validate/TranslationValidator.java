@@ -21,7 +21,6 @@ public class TranslationValidator {
             return reject();
         }
 
-
         // no problem
         return resolve();
     }

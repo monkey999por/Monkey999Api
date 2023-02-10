@@ -1,7 +1,6 @@
 package com.monkey999.utils.external.api.client;
 
 
-import monkey999.tools.Setting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

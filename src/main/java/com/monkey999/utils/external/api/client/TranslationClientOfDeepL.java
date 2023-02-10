@@ -46,8 +46,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 HashMap<String, Integer> deeplUsage = (HashMap<String, Integer>) mapper.readValue(response.body(), new TypeReference<Map<String, Integer>>() {
                 });
 
-                logger.info("現在の利用文字数: {}",deeplUsage.get("character_count"));
-                logger.info("残りの翻訳可能文字数: {}",(deeplUsage.get("character_limit") - deeplUsage.get("character_count")));
+                logger.info("現在の利用文字数: {}", deeplUsage.get("character_count"));
+                logger.info("残りの翻訳可能文字数: {}", (deeplUsage.get("character_limit") - deeplUsage.get("character_count")));
 
                 return deeplUsage.get("character_count") > deeplUsage.get("character_limit");
             } else {

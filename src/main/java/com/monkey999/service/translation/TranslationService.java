@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Target;
-
 @Service
 public class TranslationService {
     Logger logger = LoggerFactory.getLogger(TranslationService.class);
@@ -37,8 +35,8 @@ public class TranslationService {
 
             // 翻訳APIコール
             String result = "";
-            if(StringUtils.hasText(req.getSource()) && StringUtils.hasText(req.getTarget())){
-                if (TargetLang.JAPANESE.languageCode.equals(req.getSource())){
+            if (StringUtils.hasText(req.getSource()) && StringUtils.hasText(req.getTarget())) {
+                if (TargetLang.JAPANESE.languageCode.equals(req.getSource())) {
                     result = translationClientFactory.getInstance(req.getTranslationClient()).request(req.getText(), TargetLang.JAPANESE, TargetLang.ENGLISH);
                 } else {
                     result = translationClientFactory.getInstance(req.getTranslationClient()).request(req.getText(), TargetLang.ENGLISH, TargetLang.JAPANESE);
