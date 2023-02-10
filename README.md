@@ -65,5 +65,5 @@ java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar .\t
  ```
  curl -X POST http://{HOST}:8080/translate \
   -H "Content-Type: application/json" \
-  -d '{"text": "Hello world", "source": "en", "translationClient": "google"}'
+  -d '{"text": "Hello world", "source": "en", "target":"ja","translation_client": "google", "certification":{"api_key": "test"}}'
  ```

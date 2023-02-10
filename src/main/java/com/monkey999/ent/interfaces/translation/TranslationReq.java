@@ -9,7 +9,7 @@ import java.beans.ConstructorProperties;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 public class TranslationReq extends BaseReq {
     private String text;
     private String source;

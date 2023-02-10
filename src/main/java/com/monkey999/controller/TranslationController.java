@@ -28,7 +28,7 @@ public class TranslationController {
             var result = service.translate(request);
             return ResponseEntity.ok(result);
         } else {
-            return ResponseEntity.badRequest().body(new ErrorRes(){{
+            return ResponseEntity.badRequest().body(new ErrorRes() {{
                 setMessage("Validation Error.");
             }});
         }

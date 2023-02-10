@@ -4,11 +4,12 @@ import com.monkey999.constant.Const;
 import com.monkey999.constant.TargetLang;
 import com.monkey999.utils.tool.LangDetector;
 import monkey999.tools.Setting;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Objects;
 
 /**
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Component
 public class TranslationClientOfGoogleAppScript implements TranslationClient {
 
+    Logger logger = LoggerFactory.getLogger(TranslationClientOfGoogleAppScript.class);
 
     @Autowired
     LangDetector detector;
@@ -30,11 +32,10 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
      * @param target after language
      * @return request URL as google apps script as "google_translate_api"
      */
-    public static String createRequestUrl(String text, TargetLang source, TargetLang target) {
-        try {
-            text = Objects.isNull(text) ? "" : Const.codec.encode(text, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-        }
+    public static String createRequestUrl(String text, TargetLang source, TargetLang target) throws Exception {
+
+        text = Objects.isNull(text) ? "" : Const.codec.encode(text, "UTF-8");
+
 
         String url = Setting.getAsString("translate_request_url");
         String param = Setting.getAsString("translate_request_param")
@@ -51,28 +52,28 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
      * @return translate result.
      */
     public static String translate(String requestUrl) {
-        try {
-            // TODO: javaのHTTP clientを使用する
-
-//            return Cmd.execute(false, new String[]{"curl", "-L", "-s", requestUrl});
-            RestTemplate restTemplate = new RestTemplate();
-            String response = restTemplate.getForObject(requestUrl, String.class);
-            return response;
-        } catch (Exception e) {
-            // とりあえずつぶしとけ
-            return "API ERROR";
-        }
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.getForObject(requestUrl, String.class);
+        return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String request(String text) {
-        text = Objects.isNull(text) ? "" : text;
+    public String request(String text) throws Exception {
         String requestUrl = detector.isJapanese(text)
                 ? createRequestUrl(text, TargetLang.JAPANESE, TargetLang.ENGLISH)
                 : createRequestUrl(text, TargetLang.ENGLISH, TargetLang.JAPANESE);
 
-        System.out.println(requestUrl);
+        logger.info(requestUrl);
         return translate(requestUrl);
     }
+
+    @Override
+    public String request(String text, TargetLang source, TargetLang target) throws Exception {
+        return translate(createRequestUrl(text, source, target));
+    }
+
 
 }

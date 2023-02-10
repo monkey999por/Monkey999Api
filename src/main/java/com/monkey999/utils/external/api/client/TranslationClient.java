@@ -1,5 +1,6 @@
 package com.monkey999.utils.external.api.client;
 
+import com.monkey999.constant.TargetLang;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,5 +13,16 @@ public interface TranslationClient {
      * @param text translate text.
      * @return translate result. nomal text
      */
-    String request(String text);
+    String request(String text) throws Exception;
+
+    /**
+     * @param text   翻訳するテキスト
+     * @param source 翻訳元言語コード
+     * @param target 翻訳先言語コード
+     * @return
+     * @throws Exception
+     */
+    String request(String text, TargetLang source, TargetLang target) throws Exception;
+
+
 }

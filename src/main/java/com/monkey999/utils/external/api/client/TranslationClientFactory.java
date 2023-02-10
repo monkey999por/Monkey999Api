@@ -14,9 +14,8 @@ public class TranslationClientFactory {
     @Autowired
     TranslationClientOfGoogleAppScript translationClientOfGoogleAppScript;
 
-    public TranslationClient getInstance() {
-        System.out.println(Setting.getAsString("translation_client"));
-        return Setting.getAsString("translation_client").equals("deepl") ? translationClientOfDeepL :
+    public TranslationClient getInstance(String client) {
+        return "deepl".equals(client) ? translationClientOfDeepL :
                 translationClientOfGoogleAppScript;
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monkey999.constant.Const;
+import com.monkey999.constant.TargetLang;
 import com.monkey999.utils.tool.LangDetector;
 import monkey999.tools.Setting;
 import org.slf4j.Logger;
@@ -17,7 +18,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,24 +25,12 @@ import java.util.Objects;
 @Component
 public class TranslationClientOfDeepL implements TranslationClient {
 
-    private static final boolean available = true;
     private static final ObjectMapper mapper = new ObjectMapper();
 
     Logger logger = LoggerFactory.getLogger(TranslationClientOfDeepL.class);
 
     @Autowired
     LangDetector detector;
-
-    public TranslationClientOfDeepL() {
-
-//        // 利用上限がきている場合は利用不可
-//        if (isLimits()) {
-//            synchronized (TranslationClientOfDeepL.class) {
-//                TranslationClientOfDeepL.available = false;
-//            }
-//        }
-
-    }
 
     private Boolean isLimits() {
         HttpClient client = HttpClient.newHttpClient();
@@ -58,8 +46,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 HashMap<String, Integer> deeplUsage = (HashMap<String, Integer>) mapper.readValue(response.body(), new TypeReference<Map<String, Integer>>() {
                 });
 
-                System.out.println("現在の利用文字数: " + deeplUsage.get("character_count"));
-                System.out.println("残りの翻訳可能文字数: " + (deeplUsage.get("character_limit") - deeplUsage.get("character_count")));
+                logger.info("現在の利用文字数: {}",deeplUsage.get("character_count"));
+                logger.info("残りの翻訳可能文字数: {}",(deeplUsage.get("character_limit") - deeplUsage.get("character_count")));
 
                 return deeplUsage.get("character_count") > deeplUsage.get("character_limit");
             } else {
@@ -73,18 +61,20 @@ public class TranslationClientOfDeepL implements TranslationClient {
     }
 
     @Override
-    public String request(String text) {
+    public String request(String text) throws Exception {
+        return detector.isJapanese(text) ?
+                request(text, TargetLang.JAPANESE, TargetLang.ENGLISH) :
+                request(text, TargetLang.ENGLISH, TargetLang.JAPANESE);
+    }
+
+    @Override
+    public String request(String text, TargetLang source, TargetLang target) throws Exception {
+        if (isLimits()) {
+            throw new Exception("DeepL翻訳は利用上限に達しています。詳細はhttps://www.deepl.com/ja/account/usageでご確認ください。");
+        }
+
         logger.info(text);
         logger.info(Setting.getAsString("deepl.authorization"));
-
-        // 文字数上限 1000文字まで
-        if (text == null || text.getBytes(StandardCharsets.UTF_8).length > 3000) {
-            return "翻訳できる文字数の上限を超えています。";
-        }
-
-        if (!TranslationClientOfDeepL.available) {
-            return "DeepL翻訳は利用上限に達しています。詳細はhttps://www.deepl.com/ja/account/usageでご確認ください。";
-        }
 
         String paramText = "";
         try {
@@ -92,12 +82,12 @@ public class TranslationClientOfDeepL implements TranslationClient {
         } catch (UnsupportedEncodingException e) {
         }
 
-        Boolean isJapanese = detector.isJapanese(text);
+        Boolean isJapanese = source.languageCode.equals("ja");
         var paramSourceLang = isJapanese ? "JA" : "EN";
         var paramTargetLang = isJapanese ? "EN-US" : "JA";
 
         var requestBody = String.format("text=%s&source_lang=%s&target_lang=%s", paramText, paramSourceLang, paramTargetLang);
-        logger.info("requestBody: " + requestBody);
+        logger.info("requestBody: {}", requestBody);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -108,7 +98,6 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
-        logger.info(Setting.getAsString("deepl.authorization"));
 
         try {
             // リクエストを送信
@@ -120,12 +109,12 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 String sourceLang = responseBody.get("translations").get(0).get("detected_source_language").asText();
                 String translateResult = responseBody.get("translations").get(0).get("text").asText();
 
-                System.out.printf("sourceLang: %s\r\n", sourceLang);
-                System.out.printf("result: %s\r\n", translateResult);
+                logger.info("sourceLang: {}", sourceLang);
+                logger.info("result: {}", translateResult);
 
                 return translateResult;
             } else {
-                return "なんらかのエラーが発生: HTTP STATUS: " + response.statusCode();
+                throw new Exception("ERROR" + response.statusCode());
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
