@@ -6,9 +6,9 @@ import com.monkey999.service.translation.TranslationService;
 import com.monkey999.validate.TranslationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,14 +20,14 @@ public class TranslationController {
     TranslationService service;
 
     @PostMapping(value = "/translate", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public BaseRes translate(@RequestBody TranslationReq request) {
+    public ResponseEntity<BaseRes> translate(@RequestBody TranslationReq request) {
 
-        final var validateResult = validator.validate();
+        final var validateResult = validator.validate(request);
         if (validateResult.noProblem) {
-            return service.translate(request);
+            var result = service.translate(request);
+            return ResponseEntity.ok(result);
         } else {
-            return new BaseRes();
+            return ResponseEntity.badRequest().build();
         }
 
     }

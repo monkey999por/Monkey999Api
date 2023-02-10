@@ -1,28 +1,34 @@
 package com.monkey999.ent.interfaces.translation;
 
+import com.monkey999.constant.Const;
 import com.monkey999.ent.interfaces.base.BaseReq;
 
+import java.beans.ConstructorProperties;
+
 public class TranslationReq extends BaseReq {
+    private String text;
+    private String source;
+    private String target;
+    private String translationClient;
 
-    /**
-     * 翻訳テキスト
-     */
-    public String text;
+    @ConstructorProperties({"text", "source", "target", "translation_client"})
+    public TranslationReq(String text, String source, String target, String translationClient) {
+        this.text = text;
+        this.source = source;
+        this.target = target;
+        this.translationClient = translationClient;
+    }
 
-    /**
-     * 翻訳元
-     */
-    public String source;
+    public String getText() {
+        return text;
+    }
 
-    /**
-     * 　翻訳先
-     */
-    public String target;
-
-    /**
-     * 使用する翻訳API
-     * google or deepl
-     */
-    public String translation_client;
-
+    @Override
+    public String toString() {
+        return "text: " + text + Const.br +
+                "source: " + source + Const.br +
+                "target: " + target + Const.br +
+                "translationClient: " + translationClient + Const.br +
+                "apiKey: " + super.getCertification().getApiKey() + Const.br;
+    }
 }

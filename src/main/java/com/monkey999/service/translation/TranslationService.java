@@ -1,10 +1,9 @@
 package com.monkey999.service.translation;
 
-import com.monkey999.ent.interfaces.base.BaseRes;
+import com.monkey999.constant.TargetLang;
 import com.monkey999.ent.interfaces.translation.TranslationReq;
 import com.monkey999.ent.interfaces.translation.TranslationRes;
 import com.monkey999.utils.external.api.client.TranslationClientFactory;
-import com.monkey999.utils.tool.LangDetector;
 import monkey999.tools.Setting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,9 @@ public class TranslationService {
     @Autowired
     TranslationClientFactory translationClientFactory;
 
-    public BaseRes translate(TranslationReq req) {
+    public TranslationRes translate(TranslationReq req) {
+
+        logger.info(req.toString());
 
         try {
             logger.info(settingPath);
@@ -30,15 +31,15 @@ public class TranslationService {
             logger.info(Setting.getAllToString());
 
             var result = new TranslationRes();
-            result.text = translationClientFactory.getInstance().request(req.text);
-            result.status = "200";
+            result.setText(translationClientFactory.getInstance().request(req.getText()));
+
             return result;
         } catch (Exception e) {
             logger.info("monkey999 api error");
             logger.info(e.getMessage());
             logger.info(e.getLocalizedMessage());
-            var res = new BaseRes();
-            res.status = "500";
+            var res = new TranslationRes();
+
             return res;
         }
     }
