@@ -8,7 +8,7 @@ public class ServerError {
     }
 
     String status;
-    String message;
+    public String message;
 
     String errorCode;
 

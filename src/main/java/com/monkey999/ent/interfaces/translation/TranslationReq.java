@@ -1,6 +1,8 @@
-package com.monkey999.ent.translation;
+package com.monkey999.ent.interfaces.translation;
 
-public class TranslationReq {
+import com.monkey999.ent.interfaces.base.BaseReq;
+
+public class TranslationReq extends BaseReq {
 
     /**
      * 翻訳テキスト
@@ -13,15 +15,14 @@ public class TranslationReq {
     public String source;
 
     /**
-     * 　翻訳先 TODO: Enumにしたい
+     * 　翻訳先
      */
     public String target;
 
     /**
      * 使用する翻訳API
      * google or deepl
-     * todo: スネークケースで受け取るには
      */
-    public String translationClient;
+    public String translation_client;
 
 }

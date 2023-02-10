@@ -1,8 +1,9 @@
 package com.monkey999.service.translation;
 
+import com.monkey999.ent.interfaces.base.BaseRes;
+import com.monkey999.ent.interfaces.translation.TranslationReq;
+import com.monkey999.ent.interfaces.translation.TranslationRes;
 import com.monkey999.utils.external.api.client.TranslationClientFactory;
-import com.monkey999.ent.translation.TranslationReq;
-import com.monkey999.ent.translation.TranslationRes;
 import com.monkey999.utils.tool.LangDetector;
 import monkey999.tools.Setting;
 import org.slf4j.Logger;
@@ -19,57 +20,26 @@ public class TranslationService {
     public String settingPath;
 
     @Autowired
-    LangDetector langDetector;
-
-    @Autowired
     TranslationClientFactory translationClientFactory;
 
-    public TranslationRes translate(TranslationReq req) {
+    public BaseRes translate(TranslationReq req) {
 
         try {
-            // TODO loggerを入れる
-
-            // localはOK
-            // ラズパイデプロイするとダメ？
-            logger.info("setting start");
-//            String path = ResourceUtils.getFile("classpath:translation/setting.properties").getPath();
             logger.info(settingPath);
             Setting.init(settingPath);
             logger.info(Setting.getAllToString());
-            logger.info("setting done");
 
-            // TODO: test Detector使えるか
-            // localはOK
-            // ラズパイデプロイするとダメ？
-            logger.info("detector start");
-            logger.info("ja: " + langDetector.isJapanese("あいうえお").toString());
-            logger.info("ja: " + langDetector.isJapanese("this is pen").toString());
-            logger.info("detector done");
-
-            logger.info("api start");
-//            TranslationClient client = TranslationClientFactory.newInstance();
             var result = new TranslationRes();
             result.text = translationClientFactory.getInstance().request(req.text);
-
             result.status = "200";
-            logger.info("monkey999 api ok");
             return result;
-
         } catch (Exception e) {
-
-//             TODO ラズパイに載せたら以下のエラー
-//            cannot be resolved to absolute file path because it does not reside in the file system: jar:file:/server/Monkey999Api-0.0.1-SNAPSHOT.jar!/BOOT-INF/classes!/translation/setting.properties
-
             logger.info("monkey999 api error");
             logger.info(e.getMessage());
             logger.info(e.getLocalizedMessage());
-            e.printStackTrace();
-            var temp = new TranslationRes();
-            temp.status = "500";
-            return temp;
+            var res = new BaseRes();
+            res.status = "500";
+            return res;
         }
-
-
     }
-
 }
