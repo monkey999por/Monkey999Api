@@ -1,10 +1,9 @@
-package com.monkey999.translation.client;
+package com.monkey999.utils.external.api.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.monkey999.translation.service.TranslationService;
-import com.monkey999.utils.constant.Const;
+import com.monkey999.constant.Const;
 import com.monkey999.utils.tool.LangDetector;
 import monkey999.tools.Setting;
 import org.slf4j.Logger;

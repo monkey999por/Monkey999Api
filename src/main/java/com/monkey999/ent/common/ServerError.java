@@ -1,4 +1,4 @@
-package com.monkey999.utils.ent;
+package com.monkey999.ent.common;
 
 public class ServerError {
 

@@ -1,4 +1,4 @@
-package com.monkey999.translation.ent;
+package com.monkey999.ent.translation;
 
 public class TranslationReq {
 

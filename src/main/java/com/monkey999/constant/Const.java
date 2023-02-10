@@ -1,4 +1,4 @@
-package com.monkey999.utils.constant;
+package com.monkey999.constant;
 
 import org.apache.commons.codec.net.URLCodec;
 

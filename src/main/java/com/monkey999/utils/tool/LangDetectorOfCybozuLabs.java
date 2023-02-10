@@ -2,7 +2,8 @@ package com.monkey999.utils.tool;
 
 import com.cybozu.labs.langdetect.Detector;
 import com.cybozu.labs.langdetect.DetectorFactory;
-import com.monkey999.utils.constant.TargetLang;
+import com.cybozu.labs.langdetect.LangDetectException;
+import com.monkey999.constant.TargetLang;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

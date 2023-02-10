@@ -1,4 +1,4 @@
-package com.monkey999.translation.client;
+package com.monkey999.utils.external.api.client;
 
 
 import monkey999.tools.Setting;

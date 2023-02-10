@@ -1,8 +1,8 @@
-package com.monkey999.translation.controller;
+package com.monkey999.controller;
 
-import com.monkey999.translation.ent.TranslationReq;
-import com.monkey999.translation.ent.TranslationRes;
-import com.monkey999.translation.service.TranslationService;
+import com.monkey999.ent.translation.TranslationReq;
+import com.monkey999.ent.translation.TranslationRes;
+import com.monkey999.service.translation.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;

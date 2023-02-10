@@ -1,9 +1,8 @@
-package com.monkey999.translation.service;
+package com.monkey999.service.translation;
 
-import com.monkey999.translation.client.TranslationClient;
-import com.monkey999.translation.client.TranslationClientFactory;
-import com.monkey999.translation.ent.TranslationReq;
-import com.monkey999.translation.ent.TranslationRes;
+import com.monkey999.utils.external.api.client.TranslationClientFactory;
+import com.monkey999.ent.translation.TranslationReq;
+import com.monkey999.ent.translation.TranslationRes;
 import com.monkey999.utils.tool.LangDetector;
 import monkey999.tools.Setting;
 import org.slf4j.Logger;

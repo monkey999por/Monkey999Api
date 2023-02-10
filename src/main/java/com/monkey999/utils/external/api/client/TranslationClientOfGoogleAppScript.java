@@ -1,11 +1,10 @@
-package com.monkey999.translation.client;
+package com.monkey999.utils.external.api.client;
 
-import com.monkey999.utils.constant.Const;
-import com.monkey999.utils.constant.TargetLang;
+import com.monkey999.constant.Const;
+import com.monkey999.constant.TargetLang;
 import com.monkey999.utils.tool.LangDetector;
 import monkey999.tools.Setting;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 

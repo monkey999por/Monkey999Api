@@ -1,4 +1,4 @@
-package com.monkey999.utils.ent;
+package com.monkey999.ent.common;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
