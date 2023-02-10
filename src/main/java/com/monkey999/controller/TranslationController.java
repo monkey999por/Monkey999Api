@@ -1,5 +1,6 @@
 package com.monkey999.controller;
 
+import com.monkey999.ent.interfaces.ErrorRes;
 import com.monkey999.ent.interfaces.base.BaseRes;
 import com.monkey999.ent.interfaces.translation.TranslationReq;
 import com.monkey999.service.translation.TranslationService;
@@ -27,7 +28,9 @@ public class TranslationController {
             var result = service.translate(request);
             return ResponseEntity.ok(result);
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(new ErrorRes(){{
+                setMessage("Validation Error.");
+            }});
         }
 
     }

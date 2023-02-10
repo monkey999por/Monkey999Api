@@ -1,6 +1,7 @@
 package com.monkey999.service.translation;
 
-import com.monkey999.constant.TargetLang;
+import com.monkey999.ent.interfaces.ErrorRes;
+import com.monkey999.ent.interfaces.base.BaseRes;
 import com.monkey999.ent.interfaces.translation.TranslationReq;
 import com.monkey999.ent.interfaces.translation.TranslationRes;
 import com.monkey999.utils.external.api.client.TranslationClientFactory;
@@ -21,7 +22,7 @@ public class TranslationService {
     @Autowired
     TranslationClientFactory translationClientFactory;
 
-    public TranslationRes translate(TranslationReq req) {
+    public BaseRes translate(TranslationReq req) {
 
         logger.info(req.toString());
 
@@ -29,18 +30,12 @@ public class TranslationService {
             logger.info(settingPath);
             Setting.init(settingPath);
             logger.info(Setting.getAllToString());
-
             var result = new TranslationRes();
             result.setText(translationClientFactory.getInstance().request(req.getText()));
-
             return result;
         } catch (Exception e) {
-            logger.info("monkey999 api error");
-            logger.info(e.getMessage());
-            logger.info(e.getLocalizedMessage());
-            var res = new TranslationRes();
-
-            return res;
+            logger.error(e.getMessage());
+            return new ErrorRes();
         }
     }
 }

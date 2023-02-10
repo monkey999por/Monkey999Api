@@ -1,10 +1,15 @@
 package com.monkey999.ent.interfaces.translation;
 
-import com.monkey999.constant.Const;
 import com.monkey999.ent.interfaces.base.BaseReq;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.beans.ConstructorProperties;
 
+@Getter
+@Setter
+@ToString
 public class TranslationReq extends BaseReq {
     private String text;
     private String source;
@@ -17,18 +22,5 @@ public class TranslationReq extends BaseReq {
         this.source = source;
         this.target = target;
         this.translationClient = translationClient;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public String toString() {
-        return "text: " + text + Const.br +
-                "source: " + source + Const.br +
-                "target: " + target + Const.br +
-                "translationClient: " + translationClient + Const.br +
-                "apiKey: " + super.getCertification().getApiKey() + Const.br;
     }
 }

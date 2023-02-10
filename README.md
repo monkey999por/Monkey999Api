@@ -50,7 +50,7 @@ java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar .\t
 ```
 
 3. intelljで設定したリモートデバッグを起動  
-参考：<https://reasonable-code.com/intellij-remote-debug/>
+   参考：<https://reasonable-code.com/intellij-remote-debug/>
 
 ### 動作確認
 
