@@ -3,29 +3,29 @@
 APIいろいろ  
 例えば[translation](https://github.com/monkey999por/translation)で使用するAPI
 
-# require
+# Require
 
 - java 17 (or more)
 - maven 3.8.6 (or more)
 
-# 起動
+# Start
 
-## mvnの場合
+## For apache maven
 
 ```
 mvn install
 mvn spring-boot:run
 ```
 
-## intelljの場合
+## For intellj
 
 ```
 上部ツールバーから実行 -> run main
 ```
 
-## javaの場合
+## For java
 
-実行可能jarを作成
+実行可能jarを作成 ※デプロイするときもこれで作ったjar(war)を使う
 
 ```shell
 mvn package spring-boot:repackage
@@ -41,7 +41,7 @@ java(apprication.properties切り替え方法)
 java -Dserver.port=8011 -jar ./target/Monkey999Api-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro
 ```
 
-# デバッグ
+# Debug
 
 1. コマンドラインからデバッグ起動
 

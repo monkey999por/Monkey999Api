@@ -18,7 +18,7 @@
     </properties>
 
 <!--    warでデプロイ-->
-    <packaging>war</packaging>
+<!--    <packaging>war</packaging>-->
 
     <dependencies>
 <!--        パッケージングする際にアプリケーションコンテナ（Tomcat）を内蔵しない設定-->
