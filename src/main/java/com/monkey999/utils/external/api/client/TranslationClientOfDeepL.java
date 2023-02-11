@@ -33,6 +33,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
     LangDetector detector;
 
     private Boolean isLimits() {
+        logger.info(Setting.getAsString("deepl.url.check.limit"));
+        logger.info(Setting.getAsString("deepl.authorization"));
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(Setting.getAsString("deepl.url.check.limit")))
@@ -41,7 +43,22 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 .header("User-Agent", "translation/1.2.3").build();
 
         try {
+            logger.info(request.toString());
+//            request.headers().map().forEach((k,v) -> {
+//                logger.info(k);
+//                v.forEach((w) -> {
+//                    logger.info(w);
+//                });
+//            });
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            logger.info(response.body());
+//            response.headers().map().forEach((k,v) -> {
+//                logger.info(k);
+//                v.forEach((w) -> {
+//                    logger.info(w);
+//                });
+//            });
+
             if (response.statusCode() == 200) {
                 HashMap<String, Integer> deeplUsage = (HashMap<String, Integer>) mapper.readValue(response.body(), new TypeReference<Map<String, Integer>>() {
                 });
@@ -54,7 +71,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 throw new Exception("http status code error: " + response.statusCode());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR Deepl is limit");
+            logger.error(e.getMessage());
             // 例外時はその時点でアウト
             return true;
         }
