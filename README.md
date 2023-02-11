@@ -1,69 +1,65 @@
-### What is
+# What is
 
 APIいろいろ  
 例えば[translation](https://github.com/monkey999por/translation)で使用するAPI
 
-### require
+# require
 
 - java 17 (or more)
 - maven 3.8.6 (or more)
 
-## 起動
+# 起動
 
-mvn
+## mvnの場合
 
 ```
 mvn install
 mvn spring-boot:run
 ```
 
-intellj
+## intelljの場合
 
 ```
 上部ツールバーから実行 -> run main
 ```
 
-java
+## javaの場合
 
-```
-java -Dserver.port=8011 -jar ./target/Monkey999Api-0.0.1-SNAPSHOT.jar
-```
+実行可能jarを作成
 
-java(pro)
-
-```
-java -Dserver.port=8011 -jar ./target/Monkey999Api-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro
-```
-
-## デバッグ
-
-1. 実行可能jarを作成
-
-```
+```shell
 mvn package spring-boot:repackage
 ```
 
-2. コマンドラインからデバッグ起動
+```shell
+java -Dserver.port=8011 -jar ./target/Monkey999Api-0.0.1-SNAPSHOT.jar
+```
+
+java(apprication.properties切り替え方法)
+
+```shell
+java -Dserver.port=8011 -jar ./target/Monkey999Api-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro
+```
+
+# デバッグ
+
+1. コマンドラインからデバッグ起動
 
 ```
 java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar .\target\TranslationApi-0.0.1-SNAPSHOT.jar
 ```
 
-3. intelljで設定したリモートデバッグを起動  
+2. intelljで設定したリモートデバッグを起動  
    参考：<https://reasonable-code.com/intellij-remote-debug/>
 
-### 動作確認
+※↑をやらなくてもintelljで普通にデバッグでもできるっぽい？
 
-- windows cmd.exe
-
- ```
- curl -X POST http://localhost:8080/test -H "Content-Type: application/json" -d "{\"text\": \"Hello\", \"source\": \"en\" , \"translateReq\": {}}"
- ```
+# 動作確認
 
 - bash
 
  ```
  curl -X POST http://{HOST}:8080/translate \
   -H "Content-Type: application/json" \
-  -d '{"text": "Hello world", "source": "en", "target":"ja","translation_client": "google", "certification":{"api_key": "test"}}'
+  -d '{"text": "Hello world", "source": "en", "target":"ja","translation_client": "google", "certification":{"api_key": "your_api_key"}}'
  ```

@@ -16,7 +16,18 @@
     <properties>
         <java.version>17</java.version>
     </properties>
+
+<!--    warでデプロイ-->
+    <packaging>war</packaging>
+
     <dependencies>
+<!--        パッケージングする際にアプリケーションコンテナ（Tomcat）を内蔵しない設定-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -32,7 +43,7 @@
             <artifactId>langdetect</artifactId>
             <version>1.1-20120112</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <!-- https://mvnrepository.com/artifact/org.apacwhe.commons/commons-lang3 -->
         <!--		<dependency>-->
         <!--			<groupId>org.apache.commons</groupId>-->
         <!--			<artifactId>commons-lang3</artifactId>-->
