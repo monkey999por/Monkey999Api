@@ -7,7 +7,9 @@ public enum TargetLang {
     ENGLISH("en"),
     JAPANESE("ja"),
     KOREA("ko"),
-    CHINESE("zh-cn");
+    CHINESE("zh-cn"),
+    ANY("any");
+
 
     public final String languageCode;
 

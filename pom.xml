@@ -17,11 +17,11 @@
         <java.version>17</java.version>
     </properties>
 
-<!--    warでデプロイ-->
-<!--    <packaging>war</packaging>-->
+    <!--    warでデプロイ-->
+    <!--    <packaging>war</packaging>-->
 
     <dependencies>
-<!--        パッケージングする際にアプリケーションコンテナ（Tomcat）を内蔵しない設定-->
+        <!--        パッケージングする際にアプリケーションコンテナ（Tomcat）を内蔵しない設定-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -61,6 +61,18 @@
             <version>1.18.26</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

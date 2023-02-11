@@ -6,12 +6,15 @@ import com.monkey999.constant.TargetLang;
 import com.monkey999.ent.interfaces.base.BaseRes;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
+@ToString
 public class TranslationRes extends BaseRes {
     private String text;
 
-    @JsonProperty("language_code")
-    private TargetLang languageCode;
+    private TargetLang source = TargetLang.ANY;
+
+    private TargetLang target = TargetLang.ANY;
 }

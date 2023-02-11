@@ -1,8 +1,7 @@
 package com.monkey999.service.translation;
 
+import com.monkey999.constant.ResponseStatus;
 import com.monkey999.constant.TargetLang;
-import com.monkey999.ent.interfaces.ErrorRes;
-import com.monkey999.ent.interfaces.base.BaseRes;
 import com.monkey999.ent.interfaces.translation.TranslationReq;
 import com.monkey999.ent.interfaces.translation.TranslationRes;
 import com.monkey999.utils.external.api.client.TranslationClientFactory;
@@ -24,34 +23,37 @@ public class TranslationService {
     @Autowired
     TranslationClientFactory translationClientFactory;
 
-    public BaseRes translate(TranslationReq req) {
+    public TranslationRes translate(TranslationReq req) throws Exception {
 
         logger.info(req.toString());
+        logger.info(settingPath);
+        Setting.init(settingPath);
+        logger.info(Setting.getAllToString());
 
-        try {
-            logger.info(settingPath);
-            Setting.init(settingPath);
-            logger.info(Setting.getAllToString());
+        // return
+        var ret = new TranslationRes();
 
-            // 翻訳APIコール
-            String result = "";
-            if (StringUtils.hasText(req.getSource()) && StringUtils.hasText(req.getTarget())) {
-                if (TargetLang.JAPANESE.languageCode.equals(req.getSource())) {
-                    result = translationClientFactory.getInstance(req.getTranslationClient()).request(req.getText(), TargetLang.JAPANESE, TargetLang.ENGLISH);
-                } else {
-                    result = translationClientFactory.getInstance(req.getTranslationClient()).request(req.getText(), TargetLang.ENGLISH, TargetLang.JAPANESE);
-                }
-
+        // 翻訳APIコール
+        String result = "";
+        if (StringUtils.hasText(req.getSource()) && StringUtils.hasText(req.getTarget())) {
+            if (TargetLang.JAPANESE.languageCode.equals(req.getSource())) {
+                result = translationClientFactory.getInstance(req.getTranslationClient()).request(req.getText(), TargetLang.JAPANESE, TargetLang.ENGLISH);
+                // kuso
+                ret.setSource(TargetLang.JAPANESE);
+                ret.setTarget(TargetLang.ENGLISH);
             } else {
-                result = translationClientFactory.getInstance(req.getTranslationClient()).request(req.getText());
+                result = translationClientFactory.getInstance(req.getTranslationClient()).request(req.getText(), TargetLang.ENGLISH, TargetLang.JAPANESE);
+                ret.setSource(TargetLang.ENGLISH);
+                ret.setTarget(TargetLang.JAPANESE);
             }
-
-            var ret = new TranslationRes();
-            ret.setText(result);
-            return ret;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return new ErrorRes();
+        } else {
+            result = translationClientFactory.getInstance(req.getTranslationClient()).request(req.getText());
+            // TODO: target_lang設定
         }
+
+        ret.setText(result);
+        ret.setStatus(ResponseStatus.success);
+        return ret;
+
     }
 }
