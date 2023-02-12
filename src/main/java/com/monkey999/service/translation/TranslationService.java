@@ -24,11 +24,7 @@ public class TranslationService {
     TranslationClientFactory translationClientFactory;
 
     public TranslationRes translate(TranslationReq req) throws Exception {
-
-        logger.info(req.toString());
-        logger.info(settingPath);
         Setting.init(settingPath);
-        logger.info(Setting.getAllToString());
 
         // return
         var ret = new TranslationRes();

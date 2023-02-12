@@ -33,8 +33,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
     LangDetector detector;
 
     private Boolean isLimits() {
-        logger.info(Setting.getAsString("deepl.url.check.limit"));
-        logger.info(Setting.getAsString("deepl.authorization"));
+//        logger.info(Setting.getAsString("deepl.url.check.limit"));
+//        logger.info(Setting.getAsString("deepl.authorization"));
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(Setting.getAsString("deepl.url.check.limit")))
@@ -63,8 +63,8 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 HashMap<String, Integer> deeplUsage = (HashMap<String, Integer>) mapper.readValue(response.body(), new TypeReference<Map<String, Integer>>() {
                 });
 
-                logger.info("現在の利用文字数: {}", deeplUsage.get("character_count"));
-                logger.info("残りの翻訳可能文字数: {}", (deeplUsage.get("character_limit") - deeplUsage.get("character_count")));
+                logger.info("Number of characters used: {}", deeplUsage.get("character_count"));
+                logger.info("number of characters available: {}", (deeplUsage.get("character_limit") - deeplUsage.get("character_count")));
 
                 return deeplUsage.get("character_count") > deeplUsage.get("character_limit");
             } else {
@@ -90,10 +90,6 @@ public class TranslationClientOfDeepL implements TranslationClient {
         if (isLimits()) {
             throw new Exception("DeepL翻訳は利用上限に達しています。詳細はhttps://www.deepl.com/ja/account/usageでご確認ください。");
         }
-
-        logger.info(text);
-        logger.info(Setting.getAsString("deepl.authorization"));
-
         String paramText = "";
         try {
             paramText = Objects.isNull(text) ? "" : Const.codec.encode(text, "UTF-8");
@@ -126,10 +122,7 @@ public class TranslationClientOfDeepL implements TranslationClient {
                 JsonNode responseBody = mapper.readTree(response.body());
                 String sourceLang = responseBody.get("translations").get(0).get("detected_source_language").asText();
                 String translateResult = responseBody.get("translations").get(0).get("text").asText();
-
-                logger.info("sourceLang: {}", sourceLang);
-                logger.info("result: {}", translateResult);
-
+                logger.info("responseBody: {}", responseBody);
                 return translateResult;
             } else {
                 throw new Exception("ERROR" + response.statusCode());
