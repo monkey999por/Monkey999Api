@@ -1,9 +1,9 @@
 package com.monkey999.utils.external.api.client;
 
-import com.monkey999.constant.Const;
 import com.monkey999.constant.TargetLang;
 import com.monkey999.utils.tool.LangDetector;
 import monkey999.tools.Setting;
+import org.apache.commons.codec.DecoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,9 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
      */
     public static String createRequestUrl(String text, TargetLang source, TargetLang target) throws Exception {
 
-        text = Objects.isNull(text) ? "" : Const.codec.encode(text, "UTF-8");
+        // Spring bootがいい感じにエンコードもしてくれるからこっちでやる必要ない
+//        text = Objects.isNull(text) ? "" : Const.codec.encode(text, "UTF-8");
+        text = Objects.isNull(text) ? "" : text;
 
 
         String url = Setting.getAsString("translate_request_url");
@@ -51,7 +53,7 @@ public class TranslationClientOfGoogleAppScript implements TranslationClient {
      * @param requestUrl created by {@link TranslationClientOfGoogleAppScript#createRequestUrl(String, TargetLang, TargetLang)}.
      * @return translate result.
      */
-    public static String translate(String requestUrl) {
+    public static String translate(String requestUrl) throws DecoderException {
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(requestUrl, String.class);
         return response;

@@ -1,7 +1,6 @@
 package com.monkey999.ent.interfaces.translation;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monkey999.constant.TargetLang;
 import com.monkey999.ent.interfaces.base.BaseRes;
 import lombok.Getter;

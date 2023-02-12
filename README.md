@@ -66,4 +66,4 @@ java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar .\t
 
 ## API仕様
 
- http:{HOST}:8080/swagger-ui/index.html
+http:{HOST}:8080/swagger-ui/index.html
